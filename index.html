@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Analysis 3</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Data Analysis 3">
+  <meta name="author" content="Dr Axel Barlow">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/zenburn.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/custom.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+    
+  <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/NTU_open-graph.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  
+  <aside class="gdbar">
+    <img src="assets/img/ntu-shield.png">
+  </aside>
+  
+  <hgroup class="auto-fadein">
+    <h1>Data Analysis 3</h1>
+    <h2>BIOL10272: Practical Techniques</h2>
+    <p>Dr Axel Barlow<br/>email: axel.barlow@ntu.ac.uk</p>
+  </hgroup>
+  
+    <a href="https://github.com/draxelbarlow/BIOL10272_data_analysis_3/zipball/gh-pages" class="example">
+     Download
+    </a>
+  
+  <article></article>  
+      
+  <footer class = 'license'>
+    <a href='http://creativecommons.org/licenses/by-nc-sa/3.0/'>
+    <img width = '80px' src = 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png'>
+    </a>
+  </footer>
+  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  
+  <article data-timings="">
+    <!-- adding bold and italic options -->
+
+<style>
+em {
+  font-style: italic
+}
+strong {
+  font-weight: bold;
+}
+</style>
+
+<h2>Data analysis 3</h2>
+
+<ul>
+<li>Two variable experimental design</li>
+<li>Visualising two variables</li>
+<li>Hypothesis testing</li>
+<li><em>p</em>-values and tests of significance</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="segue dark" id="slide-2" style="background:;">
+  
+  <hgroup>
+    <h2>Two variable experimental design</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  
+  <hgroup>
+    <h2>Examples</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Quantitative variable</th>
+<th>Categorical variable</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Number of species</td>
+<td>Habitat</td>
+</tr>
+<tr>
+<td>Blood pressure</td>
+<td>Drug test and control groups</td>
+</tr>
+<tr>
+<td>Number of genes</td>
+<td>Free living or parasitic microorganism</td>
+</tr>
+<tr>
+<td>Disease prevalence</td>
+<td>Country</td>
+</tr>
+<tr>
+<td>Gene expression</td>
+<td>Developmental stage</td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="" id="slide-4" style="background:white;">
+  
+  <hgroup>
+    <h2>Penguins</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <ul>
+<li>Body mass: quantitative continuous</li>
+<li>Species: categorical</li>
+</ul>
+
+<div style='float:left;width:48%;' class='centered'>
+  <p><img src="./assets/img/chinstrap-penguin-1149258.jpg" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="100%" /></p>
+
+<p><strong>Chinstrap penguin</strong></p>
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="./assets/img/gentoo-penguins-337589.jpg" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="100%" /></p>
+
+<p><strong>Gentoo penguin</strong></p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-5" style="background:white;">
+  
+  <hgroup>
+    <h2>Data visualisation</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="" id="slide-6" style="background:white;">
+  
+  <hgroup>
+    <h2>Box plot</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    
+<div style='float:left;width:48%;' class='centered'>
+  <ul>
+<li>Also know as a box and whisker plot</li>
+<li>The box shows:
+
+<ul>
+<li><strong>Median</strong> (50th percentile)</li>
+<li><strong>lower quartile</strong> (25th percentile)</li>
+<li><strong>upper quartile</strong> (75th percentile)</li>
+</ul></li>
+<li>Note upper - lower quartile is the <strong>interquartile range</strong></li>
+<li><strong>Whiskers</strong> extend to the furthest data point within 1.5 x the interquartile range</li>
+<li>Anything outside this range is an <strong>outlier</strong></li>
+</ul>
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="assets/fig/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="95%" height="95%" style="display: block; margin: auto;" /></p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="" id="slide-7" style="background:white;">
+  
+  <hgroup>
+    <h2>Barchart</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    
+<div style='float:left;width:48%;' class='centered'>
+  <ul>
+<li>Species goes on the x axis</li>
+<li><strong>Mean</strong> body mass on the y axis</li>
+<li><strong>Error bars</strong> often used to display the sample variation</li>
+<li>+/- one <strong>standard deviation</strong> in this example</li>
+</ul>
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="assets/fig/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="95%" height="95%" style="display: block; margin: auto;" /></p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="" id="slide-8" style="background:white;">
+  
+  <hgroup>
+    <h2>Two very different &quot;barcharts&quot;</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    
+<div style='float:left;width:48%;' class='centered'>
+  <p><img src="assets/fig/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="95%" height="95%" style="display: block; margin: auto;" /></p>
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="assets/fig/unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="95%" height="95%" style="display: block; margin: auto;" /></p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  
+  <hgroup>
+    <h2>Showing the data points</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><embed src="./assets/img/s41551-017-0079.pdf" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="100%" height="500" type="application/pdf" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-10" style="background:white;">
+  
+  <hgroup>
+    <h2>Showing the data points</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="segue dark" id="slide-11" style="background:;">
+  
+  <hgroup>
+    <h2>Hypothesis testing</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-12" style="background:white;">
+  
+  <hgroup>
+    <h2>In science we call our questions hypotheses</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <ul>
+<li>A <code>hypothesis</code> (plural <code>hypotheses</code>) is a proposed explanation of something</li>
+<li>It must be <strong>testable</strong></li>
+<li>That means, we can predict different observations if the hypothesis is true or false</li>
+</ul>
+
+<p><img src="./assets/img/question-1015308.jpg" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="40%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  
+  <hgroup>
+    <h2>We generally split the question into two:</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <ul>
+<li><code>Null hypothesis</code>: there is no effect</li>
+<li><code>Alternate hypothesis</code>: there is an effect</li>
+<li>We try to reject or disprove the null hypothesis</li>
+<li>Then we can accept the alternate hypothesis</li>
+</ul>
+
+<p><img src="./assets/img/question-mark-2492009.jpg" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="70%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  
+  <hgroup>
+    <h2>Example: human sex ratio</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <h3>You hypothesise that the human sex ratio at birth may be slightly different to the 50:50 ratio generally assumed</h3>
+
+<p><strong>Predictions</strong></p>
+
+<ul>
+<li>Null hypothesis: 50% males, 50% females</li>
+<li>Alternate hypothesis: % male and % female are different</li>
+</ul>
+
+<p><strong>Results and conclusions</strong></p>
+
+<ul class = "build incremental">
+<li>The observed percentage turns out to be around 52.5%</li>
+<li>You reject the null hypothesis and accept the alternate hypothesis</li>
+<li>If 50% were observed, then you would fail to reject the null hypothesis</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-15" style="background:white;">
+  
+  <hgroup>
+    <h2>Fail to reject the null hypothesis?</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <ul>
+<li>We used a very specific wording when our observation is consistent with the null hypothesis</li>
+<li>Actually a double negative</li>
+<li>You do not prove the null hypothesis</li>
+</ul>
+
+<p><img src="./assets/img/opposites-489521.jpg" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="40%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="segue dark" id="slide-16" style="background:;">
+  
+  <hgroup>
+    <h2><em>p</em>-values and tests of significance</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  
+  <hgroup>
+    <h2>Interpreting data can be subjective</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="./assets/img/branches-2069601.jpg" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="50%" style="display: block; margin: auto;" /></p>
+
+<ul>
+<li>Subtle patterns are easier to see with big sample sizes</li>
+<li>Small sample sizes can give false impressions</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  
+  <hgroup>
+    <h2>A simple example:</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <ul>
+<li>There are two student groups, you hypothesise that one is taller than the other</li>
+<li>Height is a normally distributed continuous quantitative variable</li>
+<li><strong>Null hypothesis</strong>: there is no difference in (the distribution of) height between the two groups</li>
+<li><strong>Alternate hypothesis</strong>: there is a difference</li>
+<li>You measure 10 students from each group and compare...</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-19" style="background:white;">
+  
+  <hgroup>
+    <h2>Comparison 1</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-20" style="background:white;">
+  
+  <hgroup>
+    <h2>Comparison 2</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-21" style="background:white;">
+  
+  <hgroup>
+    <h2>Comparison 3</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-22" style="background:white;">
+  
+  <hgroup>
+    <h2>Comparison 4</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-17-1.png" title="plot of chunk unnamed-chunk-17" alt="plot of chunk unnamed-chunk-17" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="segue dark" id="slide-23" style="background:;">
+  
+  <hgroup>
+    <h2>So are the groups different?</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  
+  <hgroup>
+    <h2>All the groups are sampled from the same normal distribution</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <pre><code class="r">group1 &lt;- rnorm(10, 170, 10)
+group2 &lt;- rnorm(10, 170, 10)
+
+group1
+</code></pre>
+
+<pre><code>##  [1] 163.8797 178.4845 157.7566 171.3462 179.2484 171.1590 163.1358 181.1424
+##  [9] 177.0127 172.1342
+</code></pre>
+
+<pre><code class="r">group2
+</code></pre>
+
+<pre><code>##  [1] 173.8838 179.8192 185.9014 180.5571 176.4741 162.1718 156.6791 162.6154
+##  [9] 175.7260 164.2008
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="segue dark" id="slide-25" style="background:;">
+  
+  <hgroup>
+    <h2>Now let&#39;s increase the sample size</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-26" style="background:white;">
+  
+  <hgroup>
+    <h2>Comparison 1</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-27" style="background:white;">
+  
+  <hgroup>
+    <h2>Comparison 2</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-20-1.png" title="plot of chunk unnamed-chunk-20" alt="plot of chunk unnamed-chunk-20" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-28" style="background:white;">
+  
+  <hgroup>
+    <h2>Comparison 3</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-21-1.png" title="plot of chunk unnamed-chunk-21" alt="plot of chunk unnamed-chunk-21" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-29" style="background:white;">
+  
+  <hgroup>
+    <h2>Comparison 4</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-22-1.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  
+  <hgroup>
+    <h2>The problem</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <ul>
+<li>Rejecting the null hypothesis can be subjective</li>
+<li>We need a way of doing this mathematically</li>
+<li>Essentially, we want to know: </li>
+</ul>
+
+<p><strong>The probability of observing the data if the null hypothesis is true</strong></p>
+
+<h3>This is called a <code>p-value</code></h3>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  
+  <hgroup>
+    <h2><em>p</em>-value</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <ul>
+<li>A <em>p</em>-value is a probability</li>
+<li>The probability of observing the data if the null hypothesis is true</li>
+<li>Scales between 0 and 1</li>
+<li>Low values indicate a low probability</li>
+<li>We need some threshold value where we can reject the null hypothesis</li>
+<li>Typically 0.05 or 0.01</li>
+<li>Anything below this is termed <code>significant</code>, anything above is <code>non-significant</code></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  
+  <hgroup>
+    <h2>Students <em>t</em>-test</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <ul>
+<li>A statistical test for quantitative, normally distributed variables</li>
+<li>Compare groups or sample pairs</li>
+<li>Developed in 1908 by William Gosset</li>
+</ul>
+
+<p><img src="./assets/img/guinness-531137.jpg" title="plot of chunk unnamed-chunk-23" alt="plot of chunk unnamed-chunk-23" width="40%" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  
+  <hgroup>
+    <h2>Using the <em>t</em>-test</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <ul>
+<li>Null hypothesis: the means of the two groups are equal</li>
+<li>Alternate hypothesis: the means are different</li>
+<li><em>p</em>-value: probability of observing the data if the means are equal</li>
+</ul>
+
+<h3>Assumptions</h3>
+
+<ul>
+<li>the investigated variable is normally distributed</li>
+<li>the groups have equal variance
+
+<ul>
+<li>but there are ways to get around this</li>
+</ul></li>
+<li>the samples are independent</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-34" style="background:white;">
+  
+  <hgroup>
+    <h2>Back to our example</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-24-1.png" title="plot of chunk unnamed-chunk-24" alt="plot of chunk unnamed-chunk-24" width="80%" height="100%" style="display: block; margin: auto;" /></p>
+
+<ul>
+<li><em>t</em>-statistic = <strong>-1.272</strong>, degrees of freedom = <strong>198</strong>, <em>p</em>-value = <strong>0.205</strong></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="slide-35" style="background:white;">
+  
+  <hgroup>
+    <h2>Penguins</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-25-1.png" title="plot of chunk unnamed-chunk-25" alt="plot of chunk unnamed-chunk-25" width="80%" height="100%" style="display: block; margin: auto;" /></p>
+
+<p><em>t</em>-statistic = <strong>-19.335</strong>, degrees of freedom = <strong>185</strong>, <em>p</em>-value <strong>&lt; 0.01</strong></p>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  
+  <hgroup>
+    <h2>Data analysis 3</h2>
+  </hgroup>
+  
+  <article data-timings="">
+    <ul>
+<li>Two variable experimental design</li>
+<li>Visualising two variables</li>
+<li>Hypothesis testing</li>
+<li><em>p</em>-values and tests of significance</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+  
+</slide>
+
+<slide class="thank-you-slide segue nobackground" id="slide-37">
+  <aside class="gdbar right"><img src="assets/img/ntu-shield.png"></aside>
+  <article class="flexbox vleft auto-fadein">
+    <h2>Next time</h2>
+    <p><strong>Analysis of two quantitative variables</strong></p>
+
+  </article>
+
+  <p class="auto-fadein" data-config-contact="">
+    
+  </p>
+</slide>
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='NA'>
+         1
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Two variable experimental design'>
+         2
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Examples'>
+         3
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Penguins'>
+         4
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Data visualisation'>
+         5
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Box plot'>
+         6
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Barchart'>
+         7
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Two very different &quot;barcharts&quot;'>
+         8
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Showing the data points'>
+         9
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Showing the data points'>
+         10
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Hypothesis testing'>
+         11
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='In science we call our questions hypotheses'>
+         12
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='We generally split the question into two:'>
+         13
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Example: human sex ratio'>
+         14
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Fail to reject the null hypothesis?'>
+         15
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='<em>p</em>-values and tests of significance'>
+         16
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Interpreting data can be subjective'>
+         17
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='A simple example:'>
+         18
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Comparison 1'>
+         19
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Comparison 2'>
+         20
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Comparison 3'>
+         21
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Comparison 4'>
+         22
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='So are the groups different?'>
+         23
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='All the groups are sampled from the same normal distribution'>
+         24
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='Now let&#39;s increase the sample size'>
+         25
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Comparison 1'>
+         26
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Comparison 2'>
+         27
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='Comparison 3'>
+         28
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='Comparison 4'>
+         29
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='The problem'>
+         30
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='<em>p</em>-value'>
+         31
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='Students <em>t</em>-test'>
+         32
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Using the <em>t</em>-test'>
+         33
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='Back to our example'>
+         34
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Penguins'>
+         35
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='Data analysis 3'>
+         36
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='Next time'>
+         37
+      </a>
+    </li>
+    
+    </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

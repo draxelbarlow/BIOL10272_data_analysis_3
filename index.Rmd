@@ -1,0 +1,643 @@
+---
+title       : "Data Analysis 3"
+subtitle    : "BIOL10272: Practical Techniques"
+author      : Dr Axel Barlow
+job         : "email: axel.barlow@ntu.ac.uk"
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : zenburn      # {zenburn, tomorrow, solarized-dark, ...}
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {selfcontained, standalone, draft}
+knit        : slidify::knit2slides
+logo        : ntu-shield.png
+biglogo     : NTU_open-graph.png
+assets      : {assets: ../../assets}
+license     : by-nc-sa
+github:
+  user: draxelbarlow
+  repo: BIOL10272_data_analysis_3
+  branch: "gh-pages"
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(gganimate)
+library(RColorBrewer)
+library(knitr)
+library(palmerpenguins)
+```
+
+<!-- adding bold and italic options -->
+<style>
+em {
+  font-style: italic
+}
+strong {
+  font-weight: bold;
+}
+</style>
+
+## Data analysis 3
+
+- Two variable experimental design
+- Visualising two variables
+- Hypothesis testing
+- *p*-values and tests of significance
+
+--- .segue .dark 
+
+## Two variable experimental design
+
+--- .class #id
+
+## Examples
+
+Quantitative variable|Categorical variable
+---------------------|--------------------
+Number of species|Habitat
+Blood pressure|Drug test and control groups
+Number of genes|Free living or parasitic microorganism
+Disease prevalence|Country
+Gene expression|Developmental stage
+
+--- &twocol bg:white
+
+## Penguins
+
+- Body mass: quantitative continuous
+- Species: categorical
+
+*** =left
+
+```{r, out.width = "100%", dpi = 300, echo = FALSE}
+include_graphics("./assets/img/chinstrap-penguin-1149258.jpg")
+```
+
+**Chinstrap penguin**
+
+*** =right
+
+```{r, out.width = "100%", dpi = 300, echo = FALSE}
+include_graphics("./assets/img/gentoo-penguins-337589.jpg")
+```
+
+**Gentoo penguin**
+
+--- .class bg:white
+
+## Data visualisation
+
+```{r, out.width = "100%", out.height = "100%", fig.width = 12, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+gen_chi <- filter(penguins, species %in% c("Chinstrap", "Gentoo"))
+gen_chi <- gen_chi %>% drop_na()
+
+plot <- ggplot(gen_chi) +
+  geom_histogram(aes(x=body_mass_g, fill=species), colour="black", alpha = 0.75, show.legend=TRUE, bins = 40) +
+  xlab("body mass (g)") +
+  theme_bw(base_size = 20) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+plot
+```
+
+--- &twocol bg:white
+
+## Box plot
+
+*** =left
+
+- Also know as a box and whisker plot
+- The box shows:
+  + **Median** (50th percentile)
+  + **lower quartile** (25th percentile)
+  + **upper quartile** (75th percentile)
+- Note upper - lower quartile is the **interquartile range**
+- **Whiskers** extend to the furthest data point within 1.5 x the interquartile range
+- Anything outside this range is an **outlier**
+
+  
+*** =right
+
+```{r, out.width = "95%", out.height = "95%", fig.width = 6, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+
+plot <- ggplot(gen_chi, aes(x=species, y=body_mass_g, fill=species)) +
+  geom_boxplot(alpha = 0.75, position="identity", show.legend=FALSE) +
+  theme_bw(base_size = 20) +
+  xlab("") +
+  ylab("body mass (g)") +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+plot
+```
+
+--- &twocol bg:white
+
+## Barchart
+
+*** =left
+
+- Species goes on the x axis
+- **Mean** body mass on the y axis
+- **Error bars** often used to display the sample variation
+- +/- one **standard deviation** in this example
+
+*** =right
+
+```{r, out.width = "95%", out.height = "95%", fig.width = 6, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+mean_sd <- group_by(gen_chi, species) %>% summarize(mean_mass = mean(body_mass_g), sd = sd(body_mass_g))
+
+plot_bar1 <- ggplot(mean_sd, aes(species, mean_mass, fill=species)) +
+  geom_col(show.legend=FALSE) +
+  geom_errorbar(aes(ymin=mean_mass-sd, ymax=mean_mass+sd), width = 0.5) +
+  ylab("body mass (g)") +
+  theme_bw(base_size = 20) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+plot_bar1
+```
+
+--- &twocol bg:white
+
+## Two very different "barcharts"
+
+*** =left
+
+```{r, out.width = "95%", out.height = "95%", fig.width = 6, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+mt <- read.table("./data/human_mtDNA_vertical", header = TRUE)
+
+plot1 <- ggplot(mt) +
+  geom_bar(aes(x = Nucleotide, fill = Nucleotide), show.legend=FALSE) +
+  scale_fill_brewer(palette="Dark2") +
+  theme_bw(base_size = 20) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+plot1
+```
+
+*** =right
+
+```{r, out.width = "95%", out.height = "95%", fig.width = 6, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+plot_bar1
+```
+
+--- .class #id
+
+## Showing the data points
+
+```{r, out.width = "100%", out.height=500, dpi = 300, echo = FALSE}
+include_graphics("./assets/img/s41551-017-0079.pdf")
+```
+
+--- .class bg:white
+
+## Showing the data points
+
+```{r, out.width = "100%", out.height = "100%", fig.width = 12, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+
+plot_bar2 <- ggplot(gen_chi, aes(species, body_mass_g, colour=species)) +
+  geom_jitter(width=0.15) +
+  stat_summary(fun="mean", geom="point", colour="black", cex=5) +
+  ylab("body mass (g)") +
+  theme_bw(base_size = 25) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+plot_bar2
+```
+
+--- .segue .dark 
+
+## Hypothesis testing
+
+--- .class bg:white
+
+## In science we call our questions hypotheses
+
+- A `hypothesis` (plural `hypotheses`) is a proposed explanation of something
+- It must be **testable**
+- That means, we can predict different observations if the hypothesis is true or false
+
+```{r, out.width = "40%", dpi = 300, echo = FALSE, fig.align='center'}
+include_graphics("./assets/img/question-1015308.jpg")
+```
+
+--- .class #id
+
+## We generally split the question into two:
+- `Null hypothesis`: there is no effect
+- `Alternate hypothesis`: there is an effect
+- We try to reject or disprove the null hypothesis
+- Then we can accept the alternate hypothesis
+
+```{r, out.width = "70%", dpi = 300, echo = FALSE, fig.align='center'}
+include_graphics("./assets/img/question-mark-2492009.jpg")
+```
+
+--- .class #id
+
+## Example: human sex ratio
+
+### You hypothesise that the human sex ratio at birth may be slightly different to the 50:50 ratio generally assumed
+
+**Predictions**
+
+- Null hypothesis: 50% males, 50% females
+- Alternate hypothesis: % male and % female are different
+
+**Results and conclusions**
+
+>- The observed percentage turns out to be around 52.5%
+>- You reject the null hypothesis and accept the alternate hypothesis
+>- If 50% were observed, then you would fail to reject the null hypothesis
+
+--- .class bg:white
+
+## Fail to reject the null hypothesis?
+
+- We used a very specific wording when our observation is consistent with the null hypothesis
+- Actually a double negative
+- You do not prove the null hypothesis
+
+```{r, out.width = "40%", dpi = 300, echo = FALSE, fig.align='center'}
+include_graphics("./assets/img/opposites-489521.jpg")
+```
+
+--- .segue .dark 
+
+## *p*-values and tests of significance
+
+--- .class #id
+
+## Interpreting data can be subjective
+
+```{r, out.width = "50%", dpi = 300, echo = FALSE, fig.align='center'}
+include_graphics("./assets/img/branches-2069601.jpg")
+```
+
+- Subtle patterns are easier to see with big sample sizes
+- Small sample sizes can give false impressions
+
+--- .class #id
+
+## A simple example:
+
+- There are two student groups, you hypothesise that one is taller than the other
+- Height is a normally distributed continuous quantitative variable
+- **Null hypothesis**: there is no difference in (the distribution of) height between the two groups
+- **Alternate hypothesis**: there is a difference
+- You measure 10 students from each group and compare...
+
+--- .class bg:white
+
+## Comparison 1
+
+```{r, out.width = "100%", out.height = "100%", fig.width = 12, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+group1 <- enframe(rnorm(10, 170, 10))
+group2 <- enframe(rnorm(10, 170, 10))
+group1$group <- "1"
+group2$group <- "2"
+two_dist <- rbind(group1, group2)
+
+my_plot <- ggplot(two_dist, aes(group, value, colour=group)) +
+  geom_jitter(width=0.15, cex=4) +
+  ylab("Height (cm)") +
+  theme_bw(base_size = 25) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+my_plot
+```
+
+--- .class bg:white
+
+## Comparison 2
+
+```{r, out.width = "100%", out.height = "100%", fig.width = 12, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+group1 <- enframe(rnorm(10, 170, 10))
+group2 <- enframe(rnorm(10, 170, 10))
+group1$group <- "1"
+group2$group <- "2"
+two_dist <- rbind(group1, group2)
+
+my_plot <- ggplot(two_dist, aes(group, value, colour=group)) +
+  geom_jitter(width=0.15, cex=4) +
+  ylab("Height (cm)") +
+  theme_bw(base_size = 25) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+my_plot
+```
+
+--- .class bg:white
+
+## Comparison 3
+
+```{r, out.width = "100%", out.height = "100%", fig.width = 12, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+group1 <- enframe(rnorm(10, 170, 10))
+group2 <- enframe(rnorm(10, 170, 10))
+group1$group <- "1"
+group2$group <- "2"
+two_dist <- rbind(group1, group2)
+
+my_plot <- ggplot(two_dist, aes(group, value, colour=group)) +
+  geom_jitter(width=0.15, cex=4) +
+  ylab("Height (cm)") +
+  theme_bw(base_size = 25) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+my_plot
+```
+
+--- .class bg:white
+
+## Comparison 4
+
+```{r, out.width = "100%", out.height = "100%", fig.width = 12, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+group1 <- enframe(rnorm(10, 170, 10))
+group2 <- enframe(rnorm(10, 170, 10))
+group1$group <- "1"
+group2$group <- "2"
+two_dist <- rbind(group1, group2)
+
+my_plot <- ggplot(two_dist, aes(group, value, colour=group)) +
+  geom_jitter(width=0.15, cex=4) +
+  ylab("Height (cm)") +
+  theme_bw(base_size = 25) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+my_plot
+```
+
+--- .segue .dark
+
+## So are the groups different?
+
+--- .class #id
+
+## All the groups are sampled from the same normal distribution
+
+```{r, echo = TRUE}
+group1 <- rnorm(10, 170, 10)
+group2 <- rnorm(10, 170, 10)
+
+group1
+
+group2
+```
+
+--- .segue .dark
+
+## Now let's increase the sample size
+
+--- .class bg:white
+
+## Comparison 1
+
+```{r, out.width = "100%", out.height = "100%", fig.width = 12, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+group1 <- enframe(rnorm(100, 170, 10))
+group2 <- enframe(rnorm(100, 170, 10))
+group1$group <- "1"
+group2$group <- "2"
+two_dist <- rbind(group1, group2)
+
+my_plot <- ggplot(two_dist, aes(group, value, colour=group)) +
+  geom_jitter(width=0.15, cex=4) +
+  ylab("Height (cm)") +
+  theme_bw(base_size = 25) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+my_plot
+```
+
+--- .class bg:white
+
+## Comparison 2
+
+```{r, out.width = "100%", out.height = "100%", fig.width = 12, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+group1 <- enframe(rnorm(100, 170, 10))
+group2 <- enframe(rnorm(100, 170, 10))
+group1$group <- "1"
+group2$group <- "2"
+two_dist <- rbind(group1, group2)
+
+my_plot <- ggplot(two_dist, aes(group, value, colour=group)) +
+  geom_jitter(width=0.15, cex=4) +
+  ylab("Height (cm)") +
+  theme_bw(base_size = 25) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+my_plot
+```
+
+--- .class bg:white
+
+## Comparison 3
+
+```{r, out.width = "100%", out.height = "100%", fig.width = 12, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+group1 <- enframe(rnorm(100, 170, 10))
+group2 <- enframe(rnorm(100, 170, 10))
+group1$group <- "1"
+group2$group <- "2"
+two_dist <- rbind(group1, group2)
+
+my_plot <- ggplot(two_dist, aes(group, value, colour=group)) +
+  geom_jitter(width=0.15, cex=4) +
+  ylab("Height (cm)") +
+  theme_bw(base_size = 25) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+my_plot
+```
+
+--- .class bg:white
+
+## Comparison 4
+
+```{r, out.width = "100%", out.height = "100%", fig.width = 12, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+group1 <- enframe(rnorm(100, 170, 10))
+group2 <- enframe(rnorm(100, 170, 10))
+group1$group <- "1"
+group2$group <- "2"
+two_dist <- rbind(group1, group2)
+
+my_plot <- ggplot(two_dist, aes(group, value, colour=group)) +
+  geom_jitter(width=0.15, cex=4) +
+  ylab("Height (cm)") +
+  theme_bw(base_size = 25) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+my_plot
+```
+
+--- .class #id
+
+## The problem
+
+- Rejecting the null hypothesis can be subjective
+- We need a way of doing this mathematically
+- Essentially, we want to know: 
+
+**The probability of observing the data if the null hypothesis is true**
+
+### This is called a `p-value`
+
+--- .class #id
+
+## *p*-value
+
+- A *p*-value is a probability
+- The probability of observing the data if the null hypothesis is true
+- Scales between 0 and 1
+- Low values indicate a low probability
+- We need some threshold value where we can reject the null hypothesis
+- Typically 0.05 or 0.01
+- Anything below this is termed `significant`, anything above is `non-significant`
+
+--- .class #id
+
+## Students *t*-test
+
+- A statistical test for quantitative, normally distributed variables
+- Compare groups or sample pairs
+- Developed in 1908 by William Gosset
+
+```{r, out.width = "40%", dpi = 300, echo = FALSE, fig.align='center'}
+include_graphics("./assets/img/guinness-531137.jpg")
+```
+
+--- .class #id
+
+## Using the *t*-test
+
+- Null hypothesis: the means of the two groups are equal
+- Alternate hypothesis: the means are different
+- *p*-value: probability of observing the data if the means are equal
+
+### Assumptions
+
+- the investigated variable is normally distributed
+- the groups have equal variance
+  + but there are ways to get around this
+- the samples are independent
+
+--- .class bg:white
+
+## Back to our example
+
+```{r, out.width = "80%", out.height = "100%", fig.width = 12, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+group1 <- enframe(rnorm(100, 170, 10))
+group2 <- enframe(rnorm(100, 170, 10))
+group1$group <- "1"
+group2$group <- "2"
+two_dist <- rbind(group1, group2)
+
+my_plot <- ggplot(two_dist, aes(group, value, colour=group)) +
+  geom_jitter(width=0.15, cex=4) +
+  stat_summary(fun="mean", geom="point", colour="black", cex=5) +
+  ylab("Height (cm)") +
+  theme_bw(base_size = 25) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+my_plot
+
+my_t <- t.test(group1$value, group2$value, var.equal=TRUE)
+```
+
+- *t*-statistic = **`r format(round(my_t$statistic, 3), nsmall = 3)`**, degrees of freedom = **`r my_t$parameter`**, *p*-value = **`r format(round(my_t$p.value, 3), nsmall = 3)`**
+
+--- .class bg:white
+
+## Penguins
+
+```{r, out.width = "80%", out.height = "100%", fig.width = 12, fig.height = 7, dpi = 600, fig.align = "center", echo = FALSE}
+gen_chi <- filter(penguins, species %in% c("Chinstrap", "Gentoo"))
+gen_chi <- gen_chi %>% drop_na()
+
+plot_bar2 <- ggplot(gen_chi, aes(species, body_mass_g, colour=species)) +
+  geom_jitter(width=0.15, cex=3) +
+  stat_summary(fun="mean", geom="point", colour="black", cex=5) +
+  ylab("body mass (g)") +
+  theme_bw(base_size = 25) +
+  
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+  )
+
+plot_bar2
+
+pen_t <- t.test(body_mass_g ~ species, var.equal=TRUE, data=gen_chi)
+```
+
+ *t*-statistic = **`r format(round(pen_t$statistic, 3), nsmall = 3)`**, degrees of freedom = **`r pen_t$parameter`**, *p*-value **< 0.01**
+
+--- .class #id
+
+## Data analysis 3
+
+- Two variable experimental design
+- Visualising two variables
+- Hypothesis testing
+- *p*-values and tests of significance
+
+
+--- &thankyou
+
+## Next time
+
+**Analysis of two quantitative variables**
+
